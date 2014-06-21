@@ -27,11 +27,9 @@ from reciever import recieve_temperature
 from sender import send_temperature
 
 
-def run_server(callback, startup_message=None, shutdown_message=None, **kwargs):
+def run_server(callback, **kwargs):
+    """Calls a callback with its kwargs."""
     try:
-        if startup_message is not None:
-            print(startup_message)
-
         while True:
             callback(**kwargs)
             time.sleep(1)
@@ -39,8 +37,6 @@ def run_server(callback, startup_message=None, shutdown_message=None, **kwargs):
     except KeyboardInterrupt:
         bus.shutdown()
 
-        if shutdown_message is not None:
-            print(shutdown_message)
 
 
 if __name__ == "__main__":
@@ -87,17 +83,15 @@ if __name__ == "__main__":
 
     # sender
     if results.type == "send":
-        startup_message = 'Sender started on {}'.format(date)
+        print("Sender started on {}".format(date))
 
-        run_server(send_temperature, bus=bus, input_file=results.path,
-                   startup_message=startup_message)
+        run_server(send_temperature, bus=bus, input_file=results.path)
 
     # reciever
     elif results.type == "recieve":
-        startup_message = 'Sender started on {}'.format(date)
+        print("Reciever started on {}".format(date))
 
-        run_server(recieve_temperature, bus=bus, output_file=results.path,
-                   startup_message=startup_message)
+        run_server(recieve_temperature, bus=bus, output_file=results.path)
 
     # nothing - abort
     else:

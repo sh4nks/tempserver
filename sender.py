@@ -8,18 +8,18 @@
     :copyright: (c) 2014 by Peter Justin.
     :license: BSD, see LICENSE for more details.
 """
-import can
+
 
 def send_temperature(bus, input_file):
     """Sends a temperature over the CAN Bus.
 
     :param input_file: The file from which the temperature should be read.
+    :param bus: The Bus instance.
     """
     temperature = read_temperature_from_file(input_file)
 
     # python-can doesn't support strings at the moment, so we need to convert
     # them to integers.
-
     try:
         temperature = float(temperature)
     except ValueError:
@@ -27,7 +27,7 @@ def send_temperature(bus, input_file):
     else:
         temperature = int(temperature)
 
-    print("Sending message: {}".format(temperature))
+    #print("Sending message: {}".format(temperature))
 
     msg = can.Message(data=[temperature])
     bus.send(msg)

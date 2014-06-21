@@ -8,17 +8,14 @@
     :copyright: (c) 2014 by Peter Justin.
     :license: BSD, see LICENSE for more details.
 """
-import can
 
 
 def recieve_temperature(bus, output_file):
     """Recieves a temperature over the CAN Bus.
 
     :param output_file: The file in which the temperature should be written.
+    :param bus: The Bus instance.
     """
-    # open the file
-    output_file = open(output_file, "w")
-
     # get the message
     msg = bus.recv()
 
@@ -26,8 +23,8 @@ def recieve_temperature(bus, output_file):
     if msg.data is not None:
         data = str(msg.data[0])
 
-    # write the temperature into the file
-    output_file.write(data)
+    #print("Recieved message: {}".format(data))
 
-    # close the file
-    output_file.close()
+    with open(output_file, "w") as f:
+        # write the temperature into the file
+        f.write(data)
